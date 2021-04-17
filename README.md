@@ -1,4 +1,4 @@
-# GPU Web Scrapper PoC:
+# GPU Web Scraper PoC:
 
 > By globoglobito
 
@@ -13,33 +13,33 @@ Therefore, I built this data pipeline as a way to combat fire with fire (given t
 
 ### Base idea:
 
-![Image of Scrapper](https://github.com/globoglobito/WebScrapperPOC/blob/main/images/webscapper.JPG)
+![Image of Scraper](https://github.com/globoglobito/WebScrapperPOC/blob/main/images/webscapper.JPG)
 
 ## The pipeline consists of the following steps:
 
-#### 1) The web scrapper runs every 30 mins; extracting the relevant information from 11 webpages.
+#### 1) The web scraper runs every 30 mins; extracting the relevant information from 11 webpages.
     - If a GPU is found @ MSRP, it sends me an email with the URL.
 
 
 #### 2) Once it is done, it dumps the information into a PostgresDB table that is running in a docker container.
 
-![Image of Grafana](https://github.com/globoglobito/WebScrapperPOC/blob/main/images/Postgres_screenshot.png)
+![Image of Grafana](https://github.com/globoglobito/WebScraperPOC/blob/main/images/Postgres_screenshot.png)
 <font size="1">(The aforementioned table)</font>
 
 
 #### 3) Finally, I have a Grafana container that uses this information to visualise the data in a simple dashboard. 
 
-![Image of Grafana](https://github.com/globoglobito/WebScrapperPOC/blob/main/images/Grafana_screenshot.png)
+![Image of Grafana](https://github.com/globoglobito/WebScraperPOC/blob/main/images/Grafana_screenshot.png)
 <font size="1">(Current version of the dashboard.)</font>
 
 ## FAQ:
 
-#### Why are you only scrapping 11 links?
+#### Why are you only scraping 11 links?
 Because my current setup is borderline small form factor. Meaning only blower-style GPUs, and the EVGA XC3 line fits. Furthermore, I did not include Amazon links because I am not bothering to compete against other tools that do the job better (like CamelCamelCamel). Finally, the competition against other scalpers is downright silly (a listing went down in 49 secs after I got notified of an available GPU).
 
 
-#### Why are you only scrapping data every 30 mins?
-Multiple reasons: By scrapping in a smaller timeframe I could pottentially trigger anti-bot measures, such as getting my IP temporarily blocked. Moreover, I would fill my database pretty quickly; given it is running inside a minuscule SSD.
+#### Why are you only scraping data every 30 mins?
+Multiple reasons: By scraping in a smaller timeframe I could pottentially trigger anti-bot measures, such as getting my IP temporarily blocked. Moreover, I would fill my database pretty quickly; given it is running inside a minuscule SSD.
 
 
 #### Can I use your script?
