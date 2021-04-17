@@ -34,6 +34,9 @@ Therefore, I built this data pipeline as a way to combat fire with fire (given t
 
 ## FAQ:
 
+#### How are you scheduling the script?
+I am using Windows task scheduler. For linux you can use a simple crontab job.
+
 #### Why are you only scraping 11 links?
 Because my current setup is borderline small form factor. Meaning only blower-style GPUs, and the EVGA XC3 line fits. Furthermore, I did not include Amazon links because I am not bothering to compete against other tools that do the job better (like CamelCamelCamel). Finally, the competition against other scalpers is downright silly (a listing went down in 49 secs after I got notified of an available GPU).
 
