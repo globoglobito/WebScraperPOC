@@ -13,8 +13,8 @@ import argparse
 timestamp_of_script = '{:%Y-%m-%d %H:%M:%S}'.format(datetime.datetime.now())
 
 # A very basic logger that dumps information into a file.
-log_file = os.path.join(os.getcwd(), "WebScrapper.log")
-logger = logging.getLogger("WebScrapper")
+log_file = os.path.join(os.getcwd(), "WebScraper.log")
+logger = logging.getLogger("WebScraper")
 logger.setLevel(logging.INFO)
 file_logger = logging.FileHandler(log_file, mode='a')
 file_logger.setLevel(logging.INFO)
@@ -63,18 +63,18 @@ pages_dictionary = {"coolmod": ["https://www.coolmod.com/asus-turbo-geforce-rtx-
 
 
 # Note for docker:
-# Since we have a postgres client in local and it uses port 5432, we must bind another port when creating our container.
+# You might have an instance of Postgres running on local and it probably uses port 5432 already. We must bind another local port to port 5432 of the container.
 # In this case : docker run -d -p 4321:5432 ...... and so on
 
 def get_product_details(urls, name_class, price_class, instock_class, alternate_price_class=None):
-    """ Receives 4-5 inputs, and returns a dictionary with the scrapped information.
+    """ Receives 4-5 inputs, and returns a dictionary with the scraped information.
         The function extracts the relevant information of the url provided (price, name, availability),
         it then cleans and formats the information so that it can be dumped into a relational DB"""
     headers = {
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) "
                       "Chrome/88.0.4324.104 Safari/537.36 "
     }
-    details = {"date_of_scrapping": "", "seller": "", "name": "", "price": 0, "in_stock": False, "deal": False,
+    details = {"date_of_scraping": "", "seller": "", "name": "", "price": 0, "in_stock": False, "deal": False,
                "url": ""}
     if urls == "":
         logger.warning(f"URL parameter is empty, skipping this k-v pair")
@@ -91,7 +91,7 @@ def get_product_details(urls, name_class, price_class, instock_class, alternate_
             in_stock = soup.find(class_=instock_class)
             if alternate_price_class is not None and price is None:
                 price = soup.find(class_=alternate_price_class)
-            details["date_of_scrapping"] = timestamp
+            details["date_of_scraping"] = timestamp
             if "ibertronica" in seller_raw:
                 details["seller"] = re.sub('\.es.*', '', seller_raw)
             else:
@@ -108,7 +108,7 @@ def get_product_details(urls, name_class, price_class, instock_class, alternate_
                 details["url"] = urls
             else:
                 details = None
-                logger.warning(f"URL: {urls} not scrapped because the name of the product was not found @ {timestamp}")
+                logger.warning(f"URL: {urls} not scraped because the name of the product was not found @ {timestamp}")
                 return details
             if price is not None:
                 details["price"] = int(re.sub('[^0-9]', '', price.get_text())[0:4])
@@ -116,7 +116,7 @@ def get_product_details(urls, name_class, price_class, instock_class, alternate_
                 details["in_stock"] = True
             if int(details["price"]) <= 1800:
                 details["deal"] = True
-            logger.info(f"{urls} scrapped successfully @ {timestamp}")
+            logger.info(f"{urls} scraped successfully @ {timestamp}")
         except Exception as ex:
             logger.warning(f"Exception caught @ get_product_details :{ex}")
             details = None
@@ -126,7 +126,7 @@ def get_product_details(urls, name_class, price_class, instock_class, alternate_
 def iterate_webpages(dictionary):
     """ Helper function to iterate over our pages directory using the get_products_details function"""
     if not dictionary:
-        logger.warning(f"Nothing to scrap, ending script")
+        logger.warning(f"Nothing to scrape, ending script")
         sys.exit(1)
     sql_information_list = []
     for key in dictionary:
@@ -134,15 +134,15 @@ def iterate_webpages(dictionary):
         if query is not None:
             sql_information_list.append(query)
     if not sql_information_list:
-        logger.warning(f"No information was scrapped, terminating {timestamp_of_script}")
+        logger.warning(f"No information was scraped, terminating {timestamp_of_script}")
         sys.exit(1)
     return sql_information_list
 
 
-def create_message(scrapped_data):
+def create_message(scraped_data):
     """ A simple function that creates the message to be sent in an email if the conditions are met."""
     message = ""
-    for dic in scrapped_data:
+    for dic in scraped_data:
         if dic["in_stock"] and dic["deal"]:
             line = f"The item sold by {dic['seller']} is on sale for {dic['price']} euros @ {dic['url']}\n"
             message += line
@@ -173,7 +173,7 @@ def send_email(message, config):
 
 
 def do_insert(rec, config):
-    """ This function inserts the scrapped data into our Postgres DB, should an exception occur the function will
+    """ This function inserts the scraped data into our Postgres DB, should an exception occur the function will
         rollback the transaction and continue with the rest."""
     try:
         with open(config) as reader:
@@ -195,7 +195,7 @@ def do_insert(rec, config):
             cols_str = ','.join(cols)
             values_to_insert = [dictionary[k] for k in cols]
             values_wildcards = ','.join(['%s' for i in range(len(values_to_insert))])  # -> %s,%s,%s,%s,%s,%s,%s
-            sql_str = f"INSERT INTO scrapped_data ({cols_str}) VALUES ({values_wildcards}) ON CONFLICT DO NOTHING"
+            sql_str = f"INSERT INTO scraped_data ({cols_str}) VALUES ({values_wildcards}) ON CONFLICT DO NOTHING"
             cur.execute(sql_str, values_to_insert)
             conn.commit()
         except Exception as ex:
@@ -205,11 +205,11 @@ def do_insert(rec, config):
 
 
 def main():
-    scrapped_data = iterate_webpages(pages_dictionary)
-    email = create_message(scrapped_data)
+    scraped_data = iterate_webpages(pages_dictionary)
+    email = create_message(scraped_data)
     if email:
         send_email(email, config_path)
-    do_insert(scrapped_data, pg_config_path)
+    do_insert(scraped_data, pg_config_path)
     logger.info(f"We are done! @ {timestamp_of_script}")
 
 
