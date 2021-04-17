@@ -21,11 +21,9 @@ file_logger.setLevel(logging.INFO)
 logger.addHandler(file_logger)
 
 
-
-
 # These are the web pages I decided to scrape for information. The information we need to scrape the data is:
 # The URL of the web page, the class where the name of the GPU is stored, the class where the price is stored, and
-# the class where the buy button is stored (this is our availability condition, as unless there is stock it wont appear)
+# the class where the buy button is stored (this is how we determine availability; unless there is stock this class wont appear)
 pages_dictionary = {"coolmod": ["https://www.coolmod.com/asus-turbo-geforce-rtx-3090-24gb-gddr6x-tarjeta-grafica"
                                  "-precio", "product-first-part", "text-price-total", "button-buy"],
                      "coolmod2": [
@@ -59,12 +57,9 @@ pages_dictionary = {"coolmod": ["https://www.coolmod.com/asus-turbo-geforce-rtx-
                          "baseprice", "btn btn-primary btn-lg buy GTM-addToCart buy-button js-article-buy"]}
 
 
-
-
-
 # Note for docker:
 # You might have an instance of Postgres running on local and it probably uses port 5432 already. We must bind another local port to port 5432 of the container.
-# In this case : docker run -d -p 4321:5432 ...... and so on
+# In this case when builfing the container we used : docker run -d -p 4321:5432 ...... and so on.
 
 def get_product_details(urls, name_class, price_class, instock_class, alternate_price_class=None):
     """ Receives 4-5 inputs, and returns a dictionary with the scraped information.
@@ -228,4 +223,4 @@ if __name__ == "__main__":
     pg_config_path = os.path.join(pwd, args.postgres_config_file)
 
     main()
-
+    
