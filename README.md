@@ -7,7 +7,7 @@ The aim of this fun little project is to create a tool to allow me to catch a GP
 (My trusty AMD Radeon Fury X is growing long in the tooth).
 
 
-To provide some context it is 2021, and there is a widespread semi-conductor shortage. This shortage is partly caused by the COVID-19 pandemic; partly by the cryptocurrency mining boom. As such, GPUs are extremely scarce; either hoarded by mining farms, or bought by scalpers with the help of bots.
+To provide some context it is 2021, and there is a widespread semi-conductor shortage. This shortage is partly caused by the COVID-19 pandemic, partly by the cryptocurrency mining boom. As such, GPUs are extremely scarce; either hoarded by mining farms or bought by scalpers with the help of bots.
 
 Therefore, I built this data pipeline as a way to combat fire with fire (given that I refuse to pay the current prices), and to brush up my Python skills.
 
@@ -35,14 +35,14 @@ Therefore, I built this data pipeline as a way to combat fire with fire (given t
 ## FAQ:
 
 #### How are you scheduling the script?
-I am using Windows task scheduler. For linux you can use a simple crontab job.
+I am using Windows task scheduler. For Linux you can use a simple crontab job.
 
 #### Why are you only scraping 11 links?
 Because my current setup is borderline small form factor. Meaning only blower-style GPUs, and the EVGA XC3 line fits. Furthermore, I did not include Amazon links because I am not bothering to compete against other tools that do the job better (like CamelCamelCamel). Finally, the competition against other scalpers is downright silly (a listing went down in 49 secs after I got notified of an available GPU).
 
 
 #### Why are you only scraping data every 30 mins?
-Multiple reasons: By scraping in a smaller timeframe I could pottentially trigger anti-bot measures, such as getting my IP temporarily blocked. Moreover, I would fill my database pretty quickly; given it is running inside a minuscule SSD.
+Multiple reasons: By scraping in a smaller timeframe, I could potentially trigger anti-bot measures, such as getting my IP temporarily blocked. Moreover, I would fill my database pretty quickly; given it is running inside a minuscule SSD.
 
 
 #### Can I use your script?
@@ -50,5 +50,4 @@ Sure, go nuts.
 
 
 #### Why did you do 'xyz thing' that way?
-Because this is the first time I've done something like this. If you have a suggestion, feel free to share it.
-
+Because this is the first time I have done something like this. If you have a suggestion, feel free to share it.
