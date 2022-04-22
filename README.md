@@ -2,7 +2,8 @@
 
 > By globoglobito
 
-(Easier read found here: https://globoglobito.medium.com/creating-your-first-data-pipeline-with-python-62bfb7a298fe)
+(Easier read found here: https://globoglobito.medium.com/creating-your-first-data-pipeline-with-python-62bfb7a298fe).
+
 The aim of this fun little project is to create a tool to allow me to catch a GPU (specifically a Nvidia RTX 3090) at MSRP.
 
 (My trusty AMD Radeon Fury X is growing long in the tooth).
